@@ -17,6 +17,41 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.494" />
+
+    <LinearLayout
+        android:id="@+id/fullscreen_content_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:orientation="horizontal"
+        tools:ignore="MissingConstraints,UselessParent">
+
+        <Button
+            android:id="@+id/sell_button"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Sell"
+            tools:layout_editor_absoluteX="194dp"
+            tools:layout_editor_absoluteY="518dp" />
+
+        <Button
+            android:id="@+id/buy_button"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Buy"
+            tools:layout_editor_absoluteX="112dp"
+            tools:layout_editor_absoluteY="518dp" />
+
+    </LinearLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>
