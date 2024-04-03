@@ -20,7 +20,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.494" />
+        app:layout_constraintVertical_bias="0.61" />
 
     <LinearLayout
         android:id="@+id/fullscreen_content_controls"
@@ -31,27 +31,25 @@
         tools:ignore="MissingConstraints,UselessParent">
 
         <Button
-            android:id="@+id/sell_button"
+            android:id="@+id/get_sms"
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sell"
-            tools:layout_editor_absoluteX="194dp"
-            tools:layout_editor_absoluteY="518dp" />
+            android:text="SMS"
+            tools:layout_editor_absoluteX="300dp"
+            tools:layout_editor_absoluteY="624dp" />
 
         <Button
-            android:id="@+id/buy_button"
+            android:id="@+id/get_contacts"
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Buy"
-            tools:layout_editor_absoluteX="112dp"
-            tools:layout_editor_absoluteY="518dp" />
+            android:text="Contacts"
+            tools:layout_editor_absoluteX="74dp"
+            tools:layout_editor_absoluteY="624dp" />
 
     </LinearLayout>
-
-
 
 </android.support.constraint.ConstraintLayout>
