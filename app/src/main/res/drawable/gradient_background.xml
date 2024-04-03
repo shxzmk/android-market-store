@@ -1,0 +1,9 @@
+<shape xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="MissingDefaultResource">
+    <gradient
+        android:angle="45"
+        android:startColor="#FF0000"
+        android:endColor="#0000FF"
+        android:type="linear" />
+</shape>
