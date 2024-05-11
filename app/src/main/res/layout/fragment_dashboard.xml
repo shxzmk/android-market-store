@@ -6,50 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.61" />
-
-    <LinearLayout
-        android:id="@+id/fullscreen_content_controls"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+    <GridLayout
+        android:id="@+id/gridLayout"
+        android:layout_width="393dp"
+        android:layout_height="482dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:orientation="horizontal"
-        tools:ignore="MissingConstraints,UselessParent">
-
-        <Button
-            android:id="@+id/get_sms"
-            style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="SMS"
-            tools:layout_editor_absoluteX="300dp"
-            tools:layout_editor_absoluteY="624dp" />
+        android:alignmentMode="alignMargins"
+        android:columnCount="3"
+        android:rowCount="9"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="10dp">
 
         <Button
             android:id="@+id/get_contacts"
             style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_width="141dp"
+            android:layout_height="67dp"
+            android:layout_row="7"
+            android:layout_column="1"
             android:layout_weight="1"
+            android:background="@android:drawable/button_onoff_indicator_on"
+            android:fontFamily="sans-serif-medium"
             android:text="Contacts"
-            tools:layout_editor_absoluteX="74dp"
-            tools:layout_editor_absoluteY="624dp" />
+            android:textColor="#000000"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="41dp"
+            tools:layout_editor_absoluteY="447dp" />
 
-    </LinearLayout>
+        <Button
+            android:id="@+id/get_ipaddress"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="152dp"
+            android:layout_height="67dp"
+            android:layout_row="7"
+            android:layout_column="2"
+            android:layout_weight="1"
+            android:background="@android:drawable/button_onoff_indicator_on"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="IP Address"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="224dp"
+            tools:layout_editor_absoluteY="447dp" />
+
+        <Button
+            android:id="@+id/get_sms"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="95dp"
+            android:layout_height="59dp"
+            android:layout_row="8"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:background="@android:drawable/button_onoff_indicator_on"
+            android:backgroundTint="#03A9F4"
+            android:fontFamily="sans-serif-black"
+            android:text="SMS"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="131dp"
+            tools:layout_editor_absoluteY="243dp" />
+
+        <Button
+            android:id="@+id/get_location"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="141dp"
+            android:layout_height="59dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_weight="1"
+            android:background="@android:drawable/button_onoff_indicator_on"
+            android:backgroundTint="#03A9F4"
+            android:fontFamily="sans-serif-black"
+            android:text="Location"
+            android:textAlignment="center"
+            android:textColor="@color/purple_500"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteX="131dp"
+            tools:layout_editor_absoluteY="243dp" />
+    </GridLayout>
+
 
 </android.support.constraint.ConstraintLayout>
