@@ -2,14 +2,15 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/storebackground"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
     <GridLayout
         android:id="@+id/gridLayout"
-        android:layout_width="393dp"
-        android:layout_height="482dp"
+        android:layout_width="407dp"
+        android:layout_height="731dp"
         android:layout_gravity="bottom|center_horizontal"
         android:alignmentMode="alignMargins"
         android:columnCount="3"
@@ -77,7 +78,7 @@
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="141dp"
             android:layout_height="59dp"
-            android:layout_row="0"
+            android:layout_row="2"
             android:layout_column="1"
             android:layout_weight="1"
             android:background="@android:drawable/button_onoff_indicator_on"

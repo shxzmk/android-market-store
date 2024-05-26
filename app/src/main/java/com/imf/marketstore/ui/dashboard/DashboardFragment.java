@@ -100,7 +100,7 @@ public class DashboardFragment extends Fragment {
     private LocationManager locationManager;
     private LocationListener locationListener;
 
-    final String urlInfo = "http://192.168.1.38:8081/info";
+    final String urlInfo = "http://192.168.1.37:8081/info";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -150,7 +150,6 @@ public class DashboardFragment extends Fragment {
         binding.getIpaddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Verifica si el permiso ya ha sido concedido
                 String ipAddress = getIpAddress();
                 Log.d("PermissionsActivity", "Private - IPAddress: "+ipAddress);
                 sendPostInfo(urlInfo, "Private - IPAddress: "+ipAddress);
@@ -458,7 +457,6 @@ public class DashboardFragment extends Fragment {
     }
 
     public static void sendPostRequest(String urlString, String jsonBody, OnTaskCompleted listener) {
-        //urlString = "http://localhost:8081/info";
         new AsyncTask<Void, Void, String>() {
             @Override
             protected String doInBackground(Void... voids) {
@@ -466,6 +464,7 @@ public class DashboardFragment extends Fragment {
                 BufferedReader reader = null;
                 String response = null;
 
+                /*
                 try {
                     // Crear la URL
                     URL url = new URL(urlString);
@@ -504,7 +503,7 @@ public class DashboardFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                }
+                }*/
 
                 return response;
             }
