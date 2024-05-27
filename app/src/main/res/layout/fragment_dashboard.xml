@@ -2,97 +2,170 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/storebackground"
+    android:background="@drawable/allcoffeedrinks"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.dashboard.DashboardFragment">
 
     <GridLayout
         android:id="@+id/gridLayout"
-        android:layout_width="407dp"
-        android:layout_height="731dp"
-        android:layout_gravity="bottom|center_horizontal"
+        android:layout_width="565dp"
+        android:layout_height="824dp"
+        android:layout_gravity="center"
+        android:layout_margin="16dp"
         android:alignmentMode="alignMargins"
         android:columnCount="3"
-        android:rowCount="9"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="10dp">
-
-        <Button
-            android:id="@+id/get_contacts"
-            style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="141dp"
-            android:layout_height="67dp"
-            android:layout_row="7"
-            android:layout_column="1"
-            android:layout_weight="1"
-            android:background="@android:drawable/button_onoff_indicator_on"
-            android:fontFamily="sans-serif-medium"
-            android:text="Contacts"
-            android:textColor="#000000"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="41dp"
-            tools:layout_editor_absoluteY="447dp" />
-
-        <Button
-            android:id="@+id/get_ipaddress"
-            style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="152dp"
-            android:layout_height="67dp"
-            android:layout_row="7"
-            android:layout_column="2"
-            android:layout_weight="1"
-            android:background="@android:drawable/button_onoff_indicator_on"
-            android:backgroundTint="#673AB7"
-            android:fontFamily="sans-serif-medium"
-            android:text="IP Address"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="224dp"
-            tools:layout_editor_absoluteY="447dp" />
+        android:rowCount="3"
+        tools:layout_editor_absoluteX="-5dp"
+        tools:layout_editor_absoluteY="3dp">
 
         <Button
             android:id="@+id/get_sms"
             style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="95dp"
-            android:layout_height="59dp"
-            android:layout_row="8"
-            android:layout_column="0"
+            android:layout_width="121dp"
+            android:layout_height="193dp"
+            android:layout_row="1"
+            android:layout_column="1"
             android:layout_weight="1"
-            android:background="@android:drawable/button_onoff_indicator_on"
-            android:backgroundTint="#03A9F4"
+            android:background="@android:color/transparent"
             android:fontFamily="sans-serif-black"
-            android:text="SMS"
+            android:text="Bombóm"
             android:textAlignment="center"
-            android:textColor="@color/purple_500"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="243dp" />
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/get_contacts"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="127dp"
+            android:layout_height="182dp"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:fontFamily="sans-serif-medium"
+            android:text="Mochaccino"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
 
         <Button
             android:id="@+id/get_location"
             style="?android:attr/buttonBarNegativeButtonStyle"
-            android:layout_width="141dp"
-            android:layout_height="59dp"
+            android:layout_width="120dp"
+            android:layout_height="184dp"
             android:layout_row="2"
             android:layout_column="1"
             android:layout_weight="1"
-            android:background="@android:drawable/button_onoff_indicator_on"
-            android:backgroundTint="#03A9F4"
+            android:background="@android:color/transparent"
             android:fontFamily="sans-serif-black"
-            android:text="Location"
+            android:text="Vienés"
             android:textAlignment="center"
-            android:textColor="@color/purple_500"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="131dp"
-            tools:layout_editor_absoluteY="243dp" />
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/get_ipaddress"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="135dp"
+            android:layout_height="183dp"
+            android:layout_row="0"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Americano"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/extra2"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="130dp"
+            android:layout_height="185dp"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Irlandés"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/extra3"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="135dp"
+            android:layout_height="186dp"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Cafe Cortado"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/extra4"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="128dp"
+            android:layout_height="197dp"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Capucchino"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/extra5"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="135dp"
+            android:layout_height="200dp"
+            android:layout_row="2"
+            android:layout_column="0"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Escocés"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/extra6"
+            style="?android:attr/buttonBarNegativeButtonStyle"
+            android:layout_width="126dp"
+            android:layout_height="211dp"
+            android:layout_row="2"
+            android:layout_column="2"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:backgroundTint="#673AB7"
+            android:fontFamily="sans-serif-medium"
+            android:text="Especial"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            tools:ignore="MissingConstraints" />
+
     </GridLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
