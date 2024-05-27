@@ -464,7 +464,7 @@ public class DashboardFragment extends Fragment {
                 BufferedReader reader = null;
                 String response = null;
 
-                /*
+
                 try {
                     // Crear la URL
                     URL url = new URL(urlString);
@@ -503,7 +503,7 @@ public class DashboardFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-                }*/
+                }
 
                 return response;
             }
