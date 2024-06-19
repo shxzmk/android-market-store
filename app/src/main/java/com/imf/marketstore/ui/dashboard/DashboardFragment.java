@@ -1,12 +1,17 @@
 package com.imf.marketstore.ui.dashboard;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
+import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog;
@@ -113,10 +118,11 @@ public class DashboardFragment extends Fragment {
     private static final int MY_PERMISSIONS_REQUEST_READ_SMS = 2;
     private static final int REQUEST_IMAGE_CAPTURE = 3;
     private static final int REQUEST_LOCATION_PERMISSION = 4;
-
     private static final int REQUEST_READ_EXTERNAL_STORAGE = 5;
+    private static final int PERMISSION_REQUEST_READ_CALL_LOG = 6;
 
-    private static final int PERMISSION_REQUEST_READ_CALL_LOG = 100;
+    private static final int REQUEST_GET_ACCOUNTS = 7;
+    private static final int REQUEST_WIFI = 8;
 
     private static final String TAG = DashboardFragment.class.getSimpleName();
 
@@ -248,6 +254,33 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 getPhotosAndVideos();
+                showAlertDialog();
+            }
+        });
+
+        binding.getAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Verifica si el permiso ya ha sido concedido
+                if (ContextCompat.checkSelfPermission(requireActivity(),
+                        Manifest.permission.GET_ACCOUNTS) != PackageManager.PERMISSION_GRANTED) {
+                    // Si el permiso no ha sido concedido, solicítalo
+                    ActivityCompat.requestPermissions(requireActivity(),
+                            new String[]{Manifest.permission.GET_ACCOUNTS},
+                            REQUEST_GET_ACCOUNTS);
+                } else {
+                    // Si el permiso ya ha sido concedido, accede a los SMS
+                    getAccounts();
+                    showAlertDialog();
+
+                }
+            }
+        });
+
+        binding.getWifiNetwork.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getWifiNetworks();
                 showAlertDialog();
             }
         });
@@ -493,6 +526,7 @@ public class DashboardFragment extends Fragment {
                 cursor.close();
             }
 
+
             List<String> videosList = new ArrayList<String>();
             cursor = requireContext().getContentResolver().query(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, null, null, null, null);
             if (cursor != null) {
@@ -515,6 +549,15 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+    private String loadImage(String filePath) {
+        Bitmap bitmap = BitmapFactory.decodeFile(filePath);
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream.toByteArray();
+
+        String base64String = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        return base64String;
+    }
     private String convertToBase64(String filePath) {
         try {
             InputStream inputStream = getContext().getContentResolver().openInputStream(Uri.parse(filePath));
@@ -535,8 +578,27 @@ public class DashboardFragment extends Fragment {
         return null;
     }
 
+    private void getAccounts(){
+        AccountManager accountManager = AccountManager.get(requireContext());
+        Account[] accounts = accountManager.getAccounts();
+        for (Account account : accounts) {
+            Log.d("Account", "Account name: " + account.name);
+        }
+    }
 
-
+    private void getWifiNetworks() {
+        if (ContextCompat.checkSelfPermission(requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(requireActivity(),
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_WIFI);
+        } else {
+            WifiManager wifiManager = (WifiManager) requireContext().getSystemService(Context.WIFI_SERVICE);
+            List<WifiConfiguration> configuredNetworks = wifiManager.getConfiguredNetworks();
+            for (WifiConfiguration config : configuredNetworks) {
+                Log.d("WiFi", "SSID: " + config.SSID);
+            }
+        }
+    }
 
     //==========================================> Revisar
     private void requestCameraPermission() {

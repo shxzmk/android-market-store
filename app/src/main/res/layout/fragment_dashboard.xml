@@ -133,7 +133,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/extra5"
+            android:id="@+id/get_accounts"
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="135dp"
             android:layout_height="200dp"
@@ -149,7 +149,7 @@
             tools:ignore="MissingConstraints" />
 
         <Button
-            android:id="@+id/extra6"
+            android:id="@+id/get_wifi_network"
             style="?android:attr/buttonBarNegativeButtonStyle"
             android:layout_width="126dp"
             android:layout_height="211dp"
